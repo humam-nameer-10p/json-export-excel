@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-
+    require('./fileSaver');
     angular.module('ngJsonExportExcel', [])
         .directive('ngJsonExportExcel', function () {
             return {
@@ -13,7 +13,7 @@
                 },
                 link: function (scope, element) {
                     scope.filename = !!scope.filename ? scope.filename : 'export-excel';
-
+                    scope.fileSaver =  require('./fileSaver');
                     var fields = [];
                     var header = [];
                     var separator = scope.separator || ';';
@@ -33,7 +33,7 @@
 
                         var blob = new Blob([strData], {type: "text/plain;charset=utf-8"});
 
-                        return saveAs(blob, [scope.filename + '.csv']);
+                        return scope.fileSaver.saveAs(blob, [scope.filename + '.csv']);
                     });
 
                     function _bodyData() {
