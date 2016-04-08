@@ -28,30 +28,34 @@
                     });
 
                     element.bind('click', function() {
-                        var bodyData = _bodyData();
-                        var strData = _convertToExcel(bodyData);
+                       return _bodyData().then(function (bodyData) {
+                            var strData = _convertToExcel(bodyData);
 
-                        var blob = new Blob([strData], {type: "text/plain;charset=utf-8"});
+                            var blob = new Blob([strData], {type: "text/plain;charset=utf-8"});
 
-                        return scope.fileSaver.saveAs(blob, [scope.filename + '.csv']);
+                            return scope.fileSaver.saveAs(blob, [scope.filename + '.csv']);
+                          });
+
                     });
 
                     function _bodyData() {
-                        var data = scope.data;
-                        var body = "";
-                        angular.forEach(data, function(dataItem) {
-                            var rowItems = [];
+                       return scope.data()
+                          .then(function (data) {
+                            var body = "";
+                            angular.forEach(data, function(dataItem) {
+                              var rowItems = [];
 
-                            angular.forEach(fields, function(field) {
+                              angular.forEach(fields, function(field) {
 
-                              rowItems.push('"' + _objectToString(dataItem[field]) + '"');
+                                rowItems.push('"' + _objectToString(dataItem[field]) + '"');
 
+                              });
+
+                              body += rowItems.join(separator) + '\n';
                             });
 
-                            body += rowItems.join(separator) + '\n';
-                        });
-
-                        return body;
+                            return body;
+                          });
                     }
 
                     function _convertToExcel(body) {
