@@ -43,30 +43,9 @@
                             var rowItems = [];
 
                             angular.forEach(fields, function(field) {
-                                if(field.indexOf('.')) {
-                                    field = field.split(".");
-                                    var curItem = dataItem;
 
-                                    // deep access to obect property
-                                    angular.forEach(field, function(prop){
-                                        if (curItem !== null && curItem !== undefined) {
-                                            curItem = curItem[prop];
-                                        }
-                                    });
+                              rowItems.push('"' + _objectToString(dataItem[field]) + '"');
 
-                                    data = curItem;
-                                }
-                                else {
-                                    data = dataItem[field];
-                                }
-
-                                var fieldValue = data !== null ? data : ' ';
-
-                                if (fieldValue !== undefined && angular.isObject(fieldValue)) {
-                                    fieldValue = _objectToString(fieldValue);
-                                }
-
-                                rowItems.push(fieldValue);
                             });
 
                             body += rowItems.join(separator) + '\n';
@@ -80,12 +59,15 @@
                     }
 
                     function _objectToString(object) {
-                        var output = '';
-                        angular.forEach(object, function(value, key) {
-                            output += value + ', ';
-                        });
+                      var output = '';
+                      if( Object.prototype.toString.call( object ) === '[object Array]' ) {
+                        return object.join(separator);
+                      }
 
-                        return '"' + output + '"';
+                      if (typeof object === 'string' && object.indexOf('"')) {
+                        object = object.split('"').join('""');
+                      }
+                      return object;
                     }
                 }
             };
