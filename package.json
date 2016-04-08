@@ -1,6 +1,6 @@
 {
   "name": "json-export-excel",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dest/json-export-excel.js.min.js",
   "filename": "json-export-excel.min.js",
   "description": "export excel from json using angularJs",
