@@ -82,7 +82,7 @@
                     function _objectToString(object) {
                         var output = '';
                         angular.forEach(object, function(value, key) {
-                            output += key + ':' + value + ' ';
+                            output += value + ', ';
                         });
 
                         return '"' + output + '"';
